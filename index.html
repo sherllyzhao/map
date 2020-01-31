@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>百度地图</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map_container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+    <!-- <script src="static/common.js"></script>
+     <script src="//mapv.baidu.com/build/mapv.min.js"></script>
+     <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.27/dist/mapvgl.min.js"></script>-->
+</head>
+<body>
+<div id="map_container"></div>
+<!--<script src="//api.map.baidu.com/api?v=1.0&type=webgl&ak=ijImA55u3R2IXjsm6wmWnN8E6QRMxOYH"></script>-->
+<script src="js/baiduMap.js"></script>
+<!--<script src="https://unpkg.com/mapvgl/dist/mapvgl.min.js"></script>-->
+<script src="js/vgl.js"></script>
+<!--<script src="//api.map.baidu.com/api?v=1.0&type=webgl&ak=ijImA55u3R2IXjsm6wmWnN8E6QRMxOYH"></script>-->
+<!--<script src="static/common.js"></script>-->
+<script src="js/mapV.js"></script>
+<script src="js/mapVGl.js"></script>
+<script>
+    var bmapgl = new BMapGL.Map('map_container');
+    var cityCenter = mapv.utilCityCenter.getCenterByCityName("太原");
+    var point = new BMapGL.Point(cityCenter.lng,cityCenter.lat);
+    bmapgl.centerAndZoom(point, 12);
+    bmapgl.enableScrollWheelZoom(true);
+
+    var data = [];
+
+    /*var citys = [
+        '北京', '石家庄', '太原'
+    ];*/
+
+    var school=[
+        [112.499391,37.881601],
+        [112.561048,37.84646]
+    ];
+
+    // 构造数据
+    for (let i=0;i<school.length;i++){
+        // let cityCenter=mapv.utilCityCenter.getCenterByCityName(citys[i]);
+        data.push({
+            geometry: {
+                type: 'Point',
+                coordinates: school[i]
+            },
+        });
+    }
+
+    var view = new mapvgl.View({
+        map: bmapgl
+    });
+
+    var pointLayer = new mapvgl.PointLayer({
+        blend: 'lighter',
+        size: 16,
+        color: 'rgb(191, 67, 66, 0.8)'
+    });
+
+    view.addLayer(pointLayer);
+    pointLayer.setData(data);
+
+    bmapgl.addEventListener("click", function(e){
+        console.log(e);
+    });
+</script>
+</body>
+</html>
